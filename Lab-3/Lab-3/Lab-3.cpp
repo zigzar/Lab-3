@@ -1,7 +1,10 @@
 ﻿#include <iostream>
+#include <string>
+#include <fstream>
 
 using namespace std;
 
+ofstream fout;
 
 template <size_t N>
 void fillSnake(int (&A)[N][N], int count) {
@@ -109,13 +112,64 @@ void coutMatrix(int(&A)[N][N]) {
 	}
 }
 
+template <size_t N>
+void foutMatrix(int(&A)[N][N]) {
+	for (int i = 0; i < N; i++)
+	{
+		for (int j = 0; j < N; j++)
+		{
+			fout << A[i][j] << "\t";
+		}
+		fout << endl;
+	}
+}
+
 int main()
 {
 	setlocale(0, "");
+
+
+	string path = "matrix.txt";
 	const int N = 11;
 	int matrix[N][N] = { 0 };
-	//fillSnake(matrix, 1);
-	fillSpiral(matrix, 1);
-	coutMatrix(matrix);
+	int method, start;
 
+	while (true)
+	{
+		cout << "Выберите способ заполнения:" << endl;
+		cout << "1 - змейкой," << endl;
+		cout << "2 - спиралью" << endl;
+		cout << endl;
+		cin >> method;
+
+		cout << "Введите число, с которого начнётся заполнение: ";
+		cin >> start;
+		switch (method)
+		{
+		case 1:
+			fillSnake(matrix, start);
+			goto inpSucc;
+			break;
+		case 2:
+			fillSpiral(matrix, start);
+			goto inpSucc;
+			break;
+		default:
+			cout << "Ошибка ввода! Пожалуйста, используйте «1» или «2» для выбора метода заполнения" << endl;
+			break;
+		}
+	}
+	inpSucc:
+
+	coutMatrix(matrix);
+	fout.open(path);
+	try
+	{
+		foutMatrix(matrix);
+	}
+	catch (const exception&)
+	{
+		cout << "Ошибка записи файла!" << endl;
+	}
+	fout.close();
 }
