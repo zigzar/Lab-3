@@ -4,7 +4,6 @@ using namespace std;
 
 
 template <size_t N>
-
 void fillSnake(int (&A)[N][N], int count) {
 	for (int j = 0; j < N;)
 	{
@@ -25,9 +24,8 @@ void fillSnake(int (&A)[N][N], int count) {
 
 template <size_t N>
 void fillRight(int (&A)[N][N], int length, int &curRow, int &curCol, int &count) {
-	while (curCol <= length) {
+	for (int i = 0; i < length; i++, curCol++) {
 		A[curRow][curCol] = count++;
-		curCol++;
 	}
 	curCol--;
 	curRow++;
@@ -35,9 +33,8 @@ void fillRight(int (&A)[N][N], int length, int &curRow, int &curCol, int &count)
 
 template <size_t N>
 void fillDown(int(&A)[N][N], int length, int &curRow, int &curCol, int &count) {
-	while (curRow <= length) {
+	for (int i = 0; i < length; i++, curRow++) {
 		A[curRow][curCol] = count++;
-		curRow++;
 	}
 	curCol--;
 	curRow--;
@@ -45,9 +42,8 @@ void fillDown(int(&A)[N][N], int length, int &curRow, int &curCol, int &count) {
 
 template <size_t N>
 void fillLeft(int(&A)[N][N], int length, int &curRow, int &curCol, int &count) {
-	while (curCol <= length) {
+	for (int i = 0; i < length; i++, curCol--) {
 		A[curRow][curCol] = count++;
-		curCol--;
 	}
 	curCol++;
 	curRow--;
@@ -55,9 +51,9 @@ void fillLeft(int(&A)[N][N], int length, int &curRow, int &curCol, int &count) {
 
 template <size_t N>
 void fillUp(int(&A)[N][N], int length, int &curRow, int &curCol, int &count) {
-	while (curRow <= length) {
+	for (int i = 0; i < length; i++, curRow--) {
 		A[curRow][curCol] = count++;
-		curRow--;
+		//curRow--;
 	}
 	curCol++;
 	curRow++;
@@ -84,8 +80,11 @@ void fillDirectional(int (&A)[N][N],int length, int &curRow, int &curCol, int &d
 }
 
 template <size_t N>
-void fillSpiral(int(&A)[N][N], int count) {
-	int direction, curRow, curCol = 0;
+void fillSpiral(int(&A)[N][N], int start) {
+	int count = start;
+	int direction = 0;
+	int curRow = 0;
+	int curCol = 0;
 	for (int length = N; length > 0; length--)
 	{
 		if (length == N) {
@@ -98,24 +97,29 @@ void fillSpiral(int(&A)[N][N], int count) {
 	}
 }
 
-int main()
-{
-	setlocale(0, "");
-	const int N = 7;
-	int matrix[N][N] = { 0 };
-	//fillSnake(matrix, 1);
-	fillSpiral(matrix, 1);
+template <size_t N>
+void coutMatrix(int(&A)[N][N]) {
 	for (int i = 0; i < N; i++)
 	{
 		for (int j = 0; j < N; j++)
 		{
-			cout << matrix[i][j] << "\t";
-			if (j == N-1)
+			cout << A[i][j] << "\t";
+			if (j == N - 1)
 			{
 				cout << endl;
 			}
 		}
 	}
+}
+
+int main()
+{
+	setlocale(0, "");
+	const int N = 11;
+	int matrix[N][N] = { 0 };
+	//fillSnake(matrix, 1);
+	fillSpiral(matrix, 1);
+	coutMatrix(matrix);
 
 	short B[N][N];
 
