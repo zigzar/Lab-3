@@ -104,11 +104,8 @@ void coutMatrix(int(&A)[N][N]) {
 		for (int j = 0; j < N; j++)
 		{
 			cout << A[i][j] << "\t";
-			if (j == N - 1)
-			{
-				cout << endl;
-			}
 		}
+		cout << endl;
 	}
 }
 
@@ -120,7 +117,5 @@ int main()
 	//fillSnake(matrix, 1);
 	fillSpiral(matrix, 1);
 	coutMatrix(matrix);
-
-	short B[N][N];
 
 }
