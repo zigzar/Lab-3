@@ -141,8 +141,14 @@ int main()
 
 
 	string path = "matrix.txt";
-	const int N = 11;
-	int matrix[N][N] = { 0 };
+	int Order = 11;
+
+	int **matrix = int* [Order];
+	for (int i = 0; i < Order; i++)
+	{
+		matrix[i] = int[Order];
+	}
+	
 	int method, start;
 
 	while (true)
@@ -182,4 +188,10 @@ int main()
 		cout << "Ошибка записи файла!" << endl;
 	}
 	fout.close();
+
+	for (int i = 0; i < Order; i++)
+	{
+		delete [] matrix[i];
+	}
+	delete[] matrix;
 }
