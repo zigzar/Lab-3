@@ -7,7 +7,8 @@ using namespace std;
 
 ofstream fout;
 
-void getRank(int** A, int N) {
+
+int getRank(int** A, int N) {
 	int rank = N;
 	vector<char> line_used(N);
 	for (int i = 0; i < N; ++i) {
@@ -27,50 +28,52 @@ void getRank(int** A, int N) {
 						A[k][p] -= A[j][p] * A[k][i];
 		}
 	}
-	cout << endl << "Ранг матрицы: " << rank << endl << endl;
+	return rank;
 }
 
-void getMatr(int** mas, int** p, int i, int j, int m)
+
+void getMatr(int** A, int** p, int i, int j, int m)
 {
 	int ki, kj, di, dj;
 	di = 0;
-	for (ki = 0; ki < m - 1; ki++) { // проверка индекса строки
+	for (ki = 0; ki < m - 1; ki++) {
 		if (ki == i) di = 1;
 		dj = 0;
-		for (kj = 0; kj < m - 1; kj++) { // проверка индекса столбца
+		for (kj = 0; kj < m - 1; kj++) {
 			if (kj == j) dj = 1;
-			p[ki][kj] = mas[ki + di][kj + dj];
+			p[ki][kj] = A[ki + di][kj + dj];
 		}
 	}
 }
-int getDet(int** mas, int m) {
+int getDet(int** A, int N) {
 	int i, j, d, k, n;
-	int** p = new int* [m];
-	for (int i = 0; i < m; i++)
-		p[i] = new int[m];
+	int** p = new int* [N];
+	for (int i = 0; i < N; i++)
+		p[i] = new int[N];
 	j = 0; d = 0;
 	k = 1;
-	n = m - 1;
-	switch (m)
+	n = N - 1;
+	switch (N)
 	{
 	case 1:
-		d = mas[0][0];
+		d = A[0][0];
 		return(d);
 		break;
 	case 2:
-		d = mas[0][0] * mas[1][1] - mas[1][0] * mas[0][1];
+		d = A[0][0] * A[1][1] - A[1][0] * A[0][1];
 		return(d);
 		break;
 	default:
-		for (i = 0, j = 0; j < m; j++) {
-			getMatr(mas, p, 0, j, m);
-			d = d + k * mas[0][j] * getDet(p, n);
+		for (i = 0, j = 0; j < N; j++) {
+			getMatr(A, p, 0, j, N);
+			d = d + k * A[0][j] * getDet(p, n);
 			k = -k;
 		}
 		return(d);
 		break;
 	}
 }
+
 
 void coutMatrix(int** A, int N) {
 	for (int i = 0; i < N; i++)
@@ -82,7 +85,6 @@ void coutMatrix(int** A, int N) {
 		cout << endl;
 	}
 }
-
 void foutMatrix(int** A, int N) {
 	for (int i = 0; i < N; i++)
 	{
@@ -93,6 +95,7 @@ void foutMatrix(int** A, int N) {
 		fout << endl;
 	}
 }
+
 
 void fillSnake(int** A, int N, int count) {
 	for (int j = 0; j < N;)
@@ -116,6 +119,7 @@ void fillSnake(int** A, int N, int count) {
 	};
 };
 
+
 void fillRight(int** A, int N, int length, int &curRow, int &curCol, int &count) {
 	for (int i = 0; i < length; i++, curCol++) {
 		A[curRow][curCol] = count++;
@@ -125,7 +129,6 @@ void fillRight(int** A, int N, int length, int &curRow, int &curCol, int &count)
 	curCol--;
 	curRow++;
 }
-
 void fillDown(int **A, int N, int length, int &curRow, int &curCol, int &count) {
 	for (int i = 0; i < length; i++, curRow++) {
 		A[curRow][curCol] = count++;
@@ -135,7 +138,6 @@ void fillDown(int **A, int N, int length, int &curRow, int &curCol, int &count) 
 	curCol--;
 	curRow--;
 }
-
 void fillLeft(int** A, int N, int length, int &curRow, int &curCol, int &count) {
 	for (int i = 0; i < length; i++, curCol--) {
 		A[curRow][curCol] = count++;
@@ -145,7 +147,6 @@ void fillLeft(int** A, int N, int length, int &curRow, int &curCol, int &count) 
 	curCol++;
 	curRow--;
 }
-
 void fillUp(int** A, int N, int length, int &curRow, int &curCol, int &count) {
 	for (int i = 0; i < length; i++, curRow--) {
 		A[curRow][curCol] = count++;
@@ -203,13 +204,13 @@ int main()
 	int Order;
 	cin >> Order;
 
-	int **matrix = new int* [Order]; // Создание матрицы
+	int **matrix = new int* [Order];
 	for (int i = 0; i < Order; i++)
 	{
 		matrix[i] = new int [Order];
 	}
 
-	for (int i = 0; i < Order; i++) // Инициализация матрицы
+	for (int i = 0; i < Order; i++)
 	{
 		for (int j = 0; j < Order; j++)
 		{
@@ -256,6 +257,12 @@ int main()
 		cout << "Ошибка записи файла!" << endl;
 	}
 	fout.close();
+
+	int det = getDet(matrix, Order);
+	cout << "Определитель матрицы: " << det << endl;
+	int rank = getRank(matrix, Order);
+	cout << "Ранк матрицы " << rank << endl;
+	
 
 	for (int i = 0; i < Order; i++)
 	{
